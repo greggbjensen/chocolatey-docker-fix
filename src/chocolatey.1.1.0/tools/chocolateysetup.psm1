@@ -121,13 +121,15 @@ param(
 )
   Write-Debug "Initialize-Chocolatey"
 
-  Write-Host "`$thisScriptFolder: $thisScriptFolder"
   $installModule = Join-Path $thisScriptFolder 'chocolateyInstall\helpers\chocolateyInstaller.psm1'
   Import-Module $installModule -Force
 
   if ($chocolateyPath -eq '') {
     $programData = [Environment]::GetFolderPath("CommonApplicationData")
-    Write-Host "`$programData: $programData"
+    if ([string]::IsNullOrEmpty($programData)) {
+      $programData = $env:ProgramData
+    }
+
     $chocolateyPath = Join-Path "$programData" 'chocolatey'
   }
 
