@@ -1,4 +1,5 @@
 ﻿$thisScriptFolder = (Split-Path -parent $MyInvocation.MyCommand.Definition)
+Write-Host "`$thisScriptFolder: $thisScriptFolder"
 $chocInstallVariableName = "ChocolateyInstall"
 $sysDrive = $env:SystemDrive
 $tempDir = $env:TEMP
@@ -121,6 +122,7 @@ param(
 )
   Write-Debug "Initialize-Chocolatey"
 
+  Write-Host "`$thisScriptFolder: $thisScriptFolder"
   $installModule = Join-Path $thisScriptFolder 'chocolateyInstall\helpers\chocolateyInstaller.psm1'
   Import-Module $installModule -Force
 
