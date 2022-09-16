@@ -100,13 +100,19 @@ param (
 
   try {
     [Microsoft.Win32.Registry]::SetValue($keyHive + "\" + $registryKey, $Name, $Value, $registryType)
+    Write-Host "REG Updated"
   }
   catch {
     $target = [System.EnvironmentVariableTarget]::Machine
     if ($keyHive -eq 'HKEY_CURRENT_USER') {
-      [Environment]::SetEnvironmentVariable($Name, $Value, $target)
+      $target = [System.EnvironmentVariableTarget]::User
     }
+
+    Write-Host "CATCH ENV $target"
+    [Environment]::SetEnvironmentVariable($Name, $Value, $target)
   }
+
+  Write-Host "No worries"
 
   try {
     # make everything refresh
