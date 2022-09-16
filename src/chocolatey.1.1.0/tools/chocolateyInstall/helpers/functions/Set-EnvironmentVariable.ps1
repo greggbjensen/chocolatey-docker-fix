@@ -98,19 +98,13 @@ param (
 
   Write-Host "Registry::SetValue: $keyHive\$registryKey - $Name, $Value"
 
-  try {
-    [Microsoft.Win32.Registry]::SetValue($keyHive + "\" + $registryKey, $Name, $Value, $registryType)
-    Write-Host "REG Updated"
+  $target = [System.EnvironmentVariableTarget]::Machine
+  if ($keyHive -eq 'HKEY_CURRENT_USER') {
+    $target = [System.EnvironmentVariableTarget]::User
   }
-  catch {
-    $target = [System.EnvironmentVariableTarget]::Machine
-    if ($keyHive -eq 'HKEY_CURRENT_USER') {
-      $target = [System.EnvironmentVariableTarget]::User
-    }
 
-    Write-Host "CATCH ENV $target"
-    [Environment]::SetEnvironmentVariable($Name, $Value, $target)
-  }
+  Write-Host "CATCH ENV $target"
+  [Environment]::SetEnvironmentVariable($Name, $Value, $target)
 
   Write-Host "No worries"
 
