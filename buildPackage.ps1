@@ -1,5 +1,5 @@
 $packageName = 'chocolatey.1.1.0'
-$packagePath = "$PSScriptRoot\dist\$packageName.nupkg"
+$packagePath = "$PSScriptRoot\dist\$packageName-patched.nupkg"
 
 Write-Host "Cleaning package."
 if (Test-Path $packagePath) {
@@ -8,7 +8,7 @@ if (Test-Path $packagePath) {
 
 Write-Host "Compressing archive."
 $compress = @{
-    Path = "$PSScriptRoot\src\$packageName"
+    Path = "$PSScriptRoot\src\$packageName\**"
     CompressionLevel = "Fastest"
     DestinationPath = "$PSScriptRoot\dist\$packageName.zip"
 }
