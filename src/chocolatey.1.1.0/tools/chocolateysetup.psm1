@@ -127,6 +127,7 @@ param(
 
   if ($chocolateyPath -eq '') {
     $programData = [Environment]::GetFolderPath("CommonApplicationData")
+    Write-Host "`$programData: $programData"
     $chocolateyPath = Join-Path "$programData" 'chocolatey'
   }
 
