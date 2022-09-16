@@ -68,10 +68,12 @@ param(
   ## Called from chocolateysetup.psm1 - wrap any Write-Host in try/catch
 
   [string] $MACHINE_ENVIRONMENT_REGISTRY_KEY_NAME = "SYSTEM\CurrentControlSet\Control\Session Manager\Environment\";
+  Write-Host "`$MACHINE_ENVIRONMENT_REGISTRY_KEY_NAME: $MACHINE_ENVIRONMENT_REGISTRY_KEY_NAME, $Name"
   [Microsoft.Win32.RegistryKey] $win32RegistryKey = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($MACHINE_ENVIRONMENT_REGISTRY_KEY_NAME)
   if ($Scope -eq [System.EnvironmentVariableTarget]::User) {
     [string] $USER_ENVIRONMENT_REGISTRY_KEY_NAME = "Environment";
     [Microsoft.Win32.RegistryKey] $win32RegistryKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($USER_ENVIRONMENT_REGISTRY_KEY_NAME)
+    Write-Host "`$USER_ENVIRONMENT_REGISTRY_KEY_NAME: $USER_ENVIRONMENT_REGISTRY_KEY_NAME, $Name"
   } elseif ($Scope -eq [System.EnvironmentVariableTarget]::Process) {
     return [Environment]::GetEnvironmentVariable($Name, $Scope)
   }
@@ -89,12 +91,14 @@ param(
     #Write-Verbose "Getting environment variable $Name"
     if ($win32RegistryKey -ne $null) {
       # Some versions of Windows do not have HKCU:\Environment
+      Write-Host "`$win32RegistryKey open"
       $environmentVariableValue = $win32RegistryKey.GetValue($Name, [string]::Empty, $registryValueOptions)
     }
   } catch {
     Write-Debug "Unable to retrieve the $Name environment variable. Details: $_"
   } finally {
     if ($win32RegistryKey -ne $null) {
+      Write-Host "`$win32RegistryKey close"
       $win32RegistryKey.Close()
     }
   }

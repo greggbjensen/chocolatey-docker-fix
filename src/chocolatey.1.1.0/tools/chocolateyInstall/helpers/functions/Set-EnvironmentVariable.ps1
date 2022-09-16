@@ -71,10 +71,12 @@ param (
 
   [string]$keyHive = 'HKEY_LOCAL_MACHINE'
   [string]$registryKey = "SYSTEM\CurrentControlSet\Control\Session Manager\Environment\"
+  Write-Host "`$registryKey Local: $registryKey"
   [Microsoft.Win32.RegistryKey] $win32RegistryKey = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey($registryKey)
   if ($Scope -eq [System.EnvironmentVariableTarget]::User) {
     $keyHive = 'HKEY_CURRENT_USER'
     $registryKey = "Environment"
+    Write-Host "`$registryKey CurrentUser: $registryKey"
     [Microsoft.Win32.RegistryKey] $win32RegistryKey = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($registryKey)
   }
 
@@ -94,6 +96,7 @@ param (
     $registryType = [Microsoft.Win32.RegistryValueKind]::ExpandString
   }
 
+  Write-Host "Registry::SetValue: keyHive" + "\" + $registryKey + "$Name, $Value"
   [Microsoft.Win32.Registry]::SetValue($keyHive + "\" + $registryKey, $Name, $Value, $registryType)
 
   try {
