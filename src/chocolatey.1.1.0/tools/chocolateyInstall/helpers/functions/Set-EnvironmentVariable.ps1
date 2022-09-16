@@ -97,7 +97,16 @@ param (
   }
 
   Write-Host "Registry::SetValue: $keyHive\$registryKey - $Name, $Value"
-  [Microsoft.Win32.Registry]::SetValue($keyHive + "\" + $registryKey, $Name, $Value, $registryType)
+
+  try {
+    [Microsoft.Win32.Registry]::SetValue($keyHive + "\" + $registryKey, $Name, $Value, $registryType)
+  }
+  catch {
+    $target = [System.EnvironmentVariableTarget]::Machine
+    if ($keyHive -eq 'HKEY_CURRENT_USER') {
+      [Environment]::SetEnvironmentVariable($Name, $Value, $target)
+    }
+  }
 
   try {
     # make everything refresh
