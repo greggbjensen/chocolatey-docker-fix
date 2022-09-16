@@ -1,5 +1,4 @@
 ﻿$thisScriptFolder = (Split-Path -parent $MyInvocation.MyCommand.Definition)
-Write-Host "`$thisScriptFolder: $thisScriptFolder"
 $chocInstallVariableName = "ChocolateyInstall"
 $sysDrive = $env:SystemDrive
 $tempDir = $env:TEMP
@@ -130,6 +129,8 @@ param(
     $programData = [Environment]::GetFolderPath("CommonApplicationData")
     $chocolateyPath = Join-Path "$programData" 'chocolatey'
   }
+
+  Write-Host "`$chocolateyPath: $chocolateyPath"
 
   # variable to allow insecure directory:
   $allowInsecureRootInstall = $false
