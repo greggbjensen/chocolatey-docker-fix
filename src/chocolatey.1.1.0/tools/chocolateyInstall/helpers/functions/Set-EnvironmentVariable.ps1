@@ -96,7 +96,7 @@ param (
     $registryType = [Microsoft.Win32.RegistryValueKind]::ExpandString
   }
 
-  Write-Host "Registry::SetValue: keyHive" + "\" + $registryKey + "$Name, $Value"
+  Write-Host "Registry::SetValue: $keyHive\$registryKey - $Name, $Value"
   [Microsoft.Win32.Registry]::SetValue($keyHive + "\" + $registryKey, $Name, $Value, $registryType)
 
   try {
